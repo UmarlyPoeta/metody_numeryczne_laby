@@ -23,6 +23,26 @@ namespace utils {
         return ss.str();
     }
 
+    inline std::pair<std::pair<int,int>, std::vector<std::pair<double, double>>> read_typed_file(const std::string& filepath) {
+        std::ifstream file(filepath);
+        if (!file.is_open()) {
+            throw std::runtime_error("Nie można otworzyć pliku: " + filepath);
+        }
+        int n, m;
+        if (!(file >> n >> m)) {
+            throw std::runtime_error("Nie można wczytać nagłówka (n, m) z pliku: " + filepath);
+        }
+        std::vector<std::pair<double, double>> data;
+        double x, y;
+        while (file >> x >> y) {
+            data.emplace_back(x, y);
+        }
+        if (static_cast<int>(data.size()) != n) {
+            std::cerr << "Ostrzeżenie: oczekiwano " << n << " wierszy danych, wczytano " << data.size() << "\n";
+        }
+        return {{n, m}, data};
+    }
+
     /**
      * Wczytuje plik tekstowy linia po linii do wektora stringów.
      */
@@ -103,27 +123,6 @@ namespace utils {
         return matrix;
     }
 
-    /**
-     * Wczytuje dane CSV do wektora wektorów stringów.
-     */
-    inline std::vector<std::vector<std::string>> read_csv(const std::string& filepath, char delimiter = ',') {
-        std::ifstream file(filepath);
-        if (!file.is_open()) {
-            throw std::runtime_error("Nie można otworzyć pliku: " + filepath);
-        }
-        std::vector<std::vector<std::string>> data;
-        std::string line;
-        while (std::getline(file, line)) {
-            std::vector<std::string> row;
-            std::stringstream ss(line);
-            std::string cell;
-            while (std::getline(ss, cell, delimiter)) {
-                row.push_back(cell);
-            }
-            data.push_back(row);
-        }
-        return data;
-    }
 
     /**
      * Wczytuje pary (x, y) z pliku — dwie kolumny double.
