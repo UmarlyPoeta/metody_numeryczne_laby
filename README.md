@@ -2,10 +2,6 @@
 
 Repozytorium zawiera rozwiązania zadań laboratoryjnych z przedmiotu **Metody Numeryczne**.
 
-**Autor:** Patryk Kozłowski  
-**Kierunek:** ITE, II rok  
-**Numer albumu:** 422434  
-
 ---
 
 ## Spis treści
