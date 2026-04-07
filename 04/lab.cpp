@@ -220,11 +220,25 @@ bool back_substitution(const Matrix& ab, std::vector<double>& x, double eps, std
 	// TODO(student): implement back substitution.
 	// x must have size n after successful solve.
 	// Return false when diagonal element is near zero.
-	(void)ab;
-	(void)x;
-	(void)eps;
-	error = "TODO: Quest 3 not implemented";
-	return false;
+
+	size_t n = ab.size();
+	x.resize(n);
+
+	for (int i = n - 1; i >= 0; i--) {
+		double sum = 0.0;
+
+		for (int j = i + 1; j < n; j++) {
+			sum += ab[i][j] * x[j];
+		}
+
+		if (std::abs(ab[i][i]) < eps) {
+			return false;
+		}
+
+		x[i] = (ab[i][n] - sum) / ab[i][i];
+	}
+
+	return true;
 }
 
 // Quest 4
