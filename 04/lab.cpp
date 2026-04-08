@@ -249,10 +249,35 @@ bool forward_elimination_row_pivot(Matrix& ab, double eps, std::string& error) {
 	// 1) choose best pivot row in current column
 	// 2) swap rows
 	// 3) eliminate rows below
-	(void)ab;
-	(void)eps;
-	error = "TODO: Quest 4 not implemented";
-	return false;
+	int n = ab.size();
+    
+    for (int j = 0; j < n - 1;j++) {
+
+		int imax = j;
+		for (int i = j + 1; i < n; i++) {
+			if (abs(ab[i][j]) > abs(ab[imax][j])) {
+				imax = i;
+			}
+		}
+
+		if (imax != j) {
+			swap(ab[j], ab[imax]);
+		}
+        double m;
+
+        if (approx_equal(ab[j][j], 0.0, eps)) {
+            return false;
+        }  
+
+        for (int i = j + 1; i < n; i++) {
+            m = ab[i][j] / ab[j][j];
+            for (int d = j; d <= n; d++) {
+                ab[i][d] -= m * ab[j][d];
+            }
+        }
+    }
+
+	return true;
 }
 
 // Quest 5
@@ -268,11 +293,43 @@ bool forward_elimination_col_pivot(Matrix& ab,
 	// 1) find max abs element in row k for columns j>=k
 	// 2) swap columns and update col_perm
 	// 3) eliminate rows below
-	(void)ab;
-	(void)col_perm;
-	(void)eps;
-	error = "TODO: Quest 5 not implemented";
-	return false;
+	int n = ab.size();
+    col_perm.resize(n);
+
+	for (int i = 0; i < n; i++) {
+		col_perm[i] = i;
+	}
+
+    for (int j = 0; j < n - 1;j++) {
+
+		int jmax = j;
+		for (int i = j + 1; i < n; i++) {
+			if (abs(ab[j][i]) > abs(ab[j][jmax])) {
+				jmax = i;
+			}
+		}
+
+		if (jmax != j) {
+			for (int i = 0; i < n; i++) {
+				std::swap(ab[i][j], ab[i][jmax]);	
+			}
+			std::swap(col_perm[j], col_perm[jmax]);
+		}
+        double m;
+
+        if (approx_equal(ab[j][j], 0.0, eps)) {
+            return false;
+        }  
+
+        for (int i = j + 1; i < n; i++) {
+            m = ab[i][j] / ab[j][j];
+            for (int d = j; d <= n; d++) {
+                ab[i][d] -= m * ab[j][d];
+            }
+        }
+    }
+
+	return true;
 }
 
 // Quest 6
@@ -284,11 +341,19 @@ bool reorder_solution_from_col_permutation(const std::vector<double>& x_swapped,
 										   std::string& error) {
 	// TODO(student): implement mapping from x_swapped to x_original.
 	// Validate sizes and permutation correctness.
-	(void)x_swapped;
-	(void)col_perm;
-	(void)x_original;
-	error = "TODO: Quest 6 not implemented";
-	return false;
+	size_t n = x_swapped.size();
+	if (n != col_perm.size()) {
+		return false;
+	}
+	if (!check_unique_permutation(col_perm)) {
+		return false;
+	}
+
+	x_original.resize(n);
+	for (int i = 0; i < n; i++) {
+		x_original[col_perm[i]] = x_swapped[i];
+	}
+	return true;
 }
 
 }  // namespace student
