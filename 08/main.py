@@ -1,7 +1,6 @@
 import math
 
 
-
 # dla wygody poproszony czat o sprowadzenie tabelki do dicta
 GL_NODES_WEIGHTS = {
     2: (
@@ -68,7 +67,7 @@ def main():
     n_comp = 20
 
     tasks1 = [
-                                        # dokladne wyniki calkowania z czata
+        # dokladne wyniki calkowania z czata
         ("sin(x)", math.sin, 0.5, 2.5, lambda: -math.cos(2.5) + math.cos(0.5)),
         (
             "x^2+2x+5",
@@ -112,13 +111,13 @@ def main():
         gl4 = gauss_legendre(f, a, b, 4)
         print(f"{name}: GL2={gl2:.6f} GL3={gl3:.6f} GL4={gl4:.6f}")
 
-
-
     # 1 dokladne dla <= 3
     # 2 dokladnie dla <= 5
     # 3 dokładnie dla <= 7
     # 4 exp i sin nie sa wielomianami, a metoda daje lepsza dokl. dla stopnia 2n - 1
     # 5 blad maleje ze wzrostem liczby wezlow
 
+
 if __name__ == "__main__":
     main()
+
